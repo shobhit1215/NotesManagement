@@ -1,5 +1,6 @@
 from tkinter import *
-from tkinter import Toplevel
+from tkinter import Toplevel,messagebox
+
 import time
 
 #Functions
@@ -57,22 +58,225 @@ def connectdb():
     dbroot.mainloop()
 
 
+def addrecord():
+    def submitadd():
+        print("Added")
+    addroot=Toplevel(master=dataentryframe)
+    addroot.grab_set()
+    addroot.geometry('470x370+220+200')
+    addroot.title('Add Record')
+    addroot.config(bg='blue')
+    addroot.resizable(False,False)
+    ##############################################add labels
+    idlabel=Label(addroot,text="Enter Serial No : ",bg='gold2',font=('times',20,'bold'),relief=GROOVE,borderwidth=3,width=12,anchor='w')
+    idlabel.place(x=10,y=10)
 
+    namelabel = Label(addroot, text="Description: ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                    borderwidth=3, width=12, anchor='w')
+    namelabel.place(x=10, y=70)
+
+    desc1label = Label(addroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                    borderwidth=3, width=12, anchor='w')
+    desc1label.place(x=10, y=130)
+
+    disc2label = Label(addroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                    borderwidth=3, width=12, anchor='w')
+    disc2label.place(x=10, y=190)
+
+    disc3label = Label(addroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                    borderwidth=3, width=12, anchor='w')
+    disc3label.place(x=10, y=250)
+    ###############################33add entry
+    idval=StringVar()
+    nameval = StringVar()
+    disc1val = StringVar()
+    disc2val = StringVar()
+    disc3val = StringVar()
+    identry=Entry(addroot,font=('roman',15,'bold'),bd=5,textvariable=idval)
+    identry.place(x=250,y=10)
+
+    nameentry = Entry(addroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
+    nameentry.place(x=250, y=70)
+
+    disc1entry = Entry(addroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
+    disc1entry.place(x=250, y=130)
+
+    disc2entry = Entry(addroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
+    disc2entry.place(x=250, y=190)
+
+    disc3entry = Entry(addroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
+    disc3entry.place(x=250, y=250)
+
+    submitbtn=Button(addroot,text="Submit",font=('roman',15,'bold'),width=20,bd=5,activebackground='blue',activeforeground='white',bg='red',command=submitadd)
+    submitbtn.place(x=150,y=310)
+    addroot.mainloop()
+
+
+def searchrecord():
+    def submitadd():
+        print("Searched")
+    searchroot = Toplevel(master=dataentryframe)
+    searchroot.grab_set()
+    searchroot.geometry('470x370+220+200')
+    searchroot.title('Add Record')
+    searchroot.config(bg='blue')
+    searchroot.resizable(False, False)
+    ##############################################add labels
+    idlabel = Label(searchroot, text="Enter Serial No : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                    borderwidth=3, width=12, anchor='w')
+    idlabel.place(x=10, y=10)
+
+    namelabel = Label(searchroot, text="Description: ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                      borderwidth=3, width=12, anchor='w')
+    namelabel.place(x=10, y=70)
+
+    desc1label = Label(searchroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                       borderwidth=3, width=12, anchor='w')
+    desc1label.place(x=10, y=130)
+
+    disc2label = Label(searchroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                       borderwidth=3, width=12, anchor='w')
+    disc2label.place(x=10, y=190)
+
+    disc3label = Label(searchroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                       borderwidth=3, width=12, anchor='w')
+    disc3label.place(x=10, y=250)
+    ###############################33add entry
+    idval = StringVar()
+    nameval = StringVar()
+    disc1val = StringVar()
+    disc2val = StringVar()
+    disc3val = StringVar()
+    identry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=idval)
+    identry.place(x=250, y=10)
+
+    nameentry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
+    nameentry.place(x=250, y=70)
+
+    disc1entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
+    disc1entry.place(x=250, y=130)
+
+    disc2entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
+    disc2entry.place(x=250, y=190)
+
+    disc3entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
+    disc3entry.place(x=250, y=250)
+
+    submitbtn = Button(searchroot, text="Submit", font=('roman', 15, 'bold'), width=20, bd=5, activebackground='blue',
+                       activeforeground='white', bg='red', command=submitadd)
+    submitbtn.place(x=150, y=310)
+
+    searchroot.mainloop()
+
+def deleterecord():
+    print('delete record')
+
+def updaterecord():
+    def submitadd():
+        print("Updated")
+
+    updateroot = Toplevel(master=dataentryframe)
+    updateroot.grab_set()
+    updateroot.geometry('470x370+220+200')
+    updateroot.title('Add Record')
+    updateroot.config(bg='blue')
+    updateroot.resizable(False, False)
+    ##############################################add labels
+    idlabel = Label(updateroot, text="Enter Serial No : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                    borderwidth=3, width=12, anchor='w')
+    idlabel.place(x=10, y=10)
+
+    namelabel = Label(updateroot, text="Description: ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                      borderwidth=3, width=12, anchor='w')
+    namelabel.place(x=10, y=70)
+
+    desc1label = Label(updateroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                       borderwidth=3, width=12, anchor='w')
+    desc1label.place(x=10, y=130)
+
+    disc2label = Label(updateroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                       borderwidth=3, width=12, anchor='w')
+    disc2label.place(x=10, y=190)
+
+    disc3label = Label(updateroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                       borderwidth=3, width=12, anchor='w')
+    disc3label.place(x=10, y=250)
+    ###############################33add entry
+    idval = StringVar()
+    nameval = StringVar()
+    disc1val = StringVar()
+    disc2val = StringVar()
+    disc3val = StringVar()
+    identry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=idval)
+    identry.place(x=250, y=10)
+
+    nameentry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
+    nameentry.place(x=250, y=70)
+
+    disc1entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
+    disc1entry.place(x=250, y=130)
+
+    disc2entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
+    disc2entry.place(x=250, y=190)
+
+    disc3entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
+    disc3entry.place(x=250, y=250)
+
+    submitbtn = Button(updateroot, text="Submit", font=('roman', 15, 'bold'), width=20, bd=5, activebackground='blue',
+                       activeforeground='white', bg='red', command=submitadd)
+    submitbtn.place(x=150, y=310)
+
+    updateroot.mainloop()
+
+def showrecord():
+    print('show record')
+
+def exportrecord():
+    print('export record')
+
+def exitrecord():
+    res=messagebox.askyesnocancel('Notification','Do you want to exit? ')
+    print(res)
+    if(res==True):
+        root.destroy()
 
 #Main application begin's
 root=Tk()
-root.geometry('1000x600+200+50')
+root.geometry('1000x700+200+50')
 root.title('Manage your Notes here')
 root.config(bg='yellow')
 root.resizable(False,False)
 
-#Frames
-
+######################################Frames
+#Data Entry Frames Label
 dataentryframe=Frame(root,bg='white',relief=GROOVE,borderwidth=5)
-dataentryframe.place(x=20,y=80,width=450,height=500)
+dataentryframe.place(x=20,y=80,width=450,height=600)
+
+frontlabel=Label(dataentryframe,text='.........Welcome............',width=23,font=('arial',22,'bold'),bg='gold2')
+frontlabel.pack(side=TOP,expand=True)
+addbtn=Button(dataentryframe,text='1. Add Record',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=addrecord)
+addbtn.pack(side=TOP,expand=True)
+
+searchbtn=Button(dataentryframe,text='2. Search Record',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=searchrecord)
+searchbtn.pack(side=TOP,expand=True)
+
+deletebtn=Button(dataentryframe,text='3.Delete Record',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=deleterecord)
+deletebtn.pack(side=TOP,expand=True)
+
+updatebtn=Button(dataentryframe,text='4. Update Record',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=updaterecord)
+updatebtn.pack(side=TOP,expand=True)
+
+showallbtn=Button(dataentryframe,text='5. Show All Record',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=showrecord)
+showallbtn.pack(side=TOP,expand=True)
+
+exportbtn=Button(dataentryframe,text='6. Export Data',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=exportrecord)
+exportbtn.pack(side=TOP,expand=True)
+
+exitbtn=Button(dataentryframe,text='7. Exit',width=25,font=('chiller',20,'bold'),bd=6,bg='skyblue3',activeforeground='white',relief=RIDGE,activebackground='blue',command=exitrecord)
+exitbtn.pack(side=TOP,expand=True)
 
 showentryframe=Frame(root,bg='white',relief=GROOVE,borderwidth=5)
-showentryframe.place(x=490,y=80,width=500,height=500)
+showentryframe.place(x=490,y=80,width=500,height=600)
 
 #Slider
 
