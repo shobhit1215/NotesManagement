@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import Toplevel,messagebox
+from tkinter.ttk import Treeview
+from tkinter import ttk
+import pymysql
 
 import time
 
@@ -21,7 +24,43 @@ def intro():
         count+=1
     sliderlabel.after(200,intro)
 
+
+
 def connectdb():
+    def submitdb():
+        global con,mycursor
+        host=hostval.get()
+        user=userval.get()
+        password=passval.get()
+        try:
+            con=pymysql.connect(host=host,user=user,password=password)
+            mycursor=con.cursor()
+            print("Done")
+        except:
+            messagebox.showerror('Notification','Data is incorrect please try again')
+            return
+        try:
+            str='create database recordmanagement'
+            mycursor.execute(str)
+            str='use recordmanagement'
+            mycursor.execute(str)
+            str='create table records(serial int,description varchar(100),detail1 varchar(200),detail2 varchar(200),detail3 varchar(200))'
+            mycursor.execute(str)
+            str = 'alter table records modify column serial int not null'
+            mycursor.execute(str)
+            str = 'alter table records modify column serial int primary key'
+            mycursor.execute(str)
+            messagebox.showinfo('Notification', 'Database created and now you are connected to the database ...', parent=dbroot)
+
+
+        except:
+            str='use recordmanagement'
+            mycursor.execute(str)
+            messagebox.showinfo('Notification','Now you are connected to the database ...',parent=dbroot)
+
+
+
+
     dbroot=Toplevel()
     dbroot.grab_set()
     dbroot.title('Connect to Database')
@@ -52,7 +91,7 @@ def connectdb():
     passentry.place(x=250, y=110)
 
     ######connect button
-    submitbttn=Button(dbroot,text='Submit',font=('roman',15,'bold'),bg='red',bd=5,width=20,activebackground='Blue',activeforeground='white')
+    submitbttn=Button(dbroot,text='Submit',font=('roman',15,'bold'),bg='red',bd=5,width=20,activebackground='Blue',activeforeground='white',command=submitdb)
     submitbttn.place(x=150,y=190)
 
     dbroot.mainloop()
@@ -277,6 +316,31 @@ exitbtn.pack(side=TOP,expand=True)
 
 showentryframe=Frame(root,bg='white',relief=GROOVE,borderwidth=5)
 showentryframe.place(x=490,y=80,width=500,height=600)
+
+####################3333.... Show data frame
+style=ttk.Style()
+style.configure('Treeview.Heading',font=('chiller',20,'bold'),foregroung='blue')
+style.configure('Treeview',font=('times',15,'bold'),foreground='black',background='cyan')
+scroll_x=Scrollbar(showentryframe,orient=HORIZONTAL)
+scroll_y=Scrollbar(showentryframe,orient=VERTICAL)
+
+datatable=Treeview(showentryframe,columns=('Serial No.','Description','Detail 1','Detail 2','Detail 3'),yscrollcommand=scroll_y.set,xscrollcommand=scroll_x.set)
+scroll_x.pack(side=BOTTOM,fill=X)
+scroll_y.pack(side=RIGHT,fill=Y)
+scroll_x.config(command=datatable.xview)
+scroll_y.config(command=datatable.yview)
+datatable.heading('Serial No.',text='Serial No.')
+datatable.heading('Description',text='Description')
+datatable.heading('Detail 1',text='Detail 1')
+datatable.heading('Detail 2',text='Detail 2')
+datatable.heading('Detail 3',text='Detail 3')
+datatable['show']='headings'
+datatable.column('Serial No.',width=150)
+datatable.column('Description',width=200)
+datatable.column('Detail 1',width=300)
+datatable.column('Detail 2',width=300)
+datatable.column('Detail 3',width=300)
+datatable.pack(fill=BOTH,expand=1)
 
 #Slider
 
