@@ -29,9 +29,12 @@ def intro():
 def connectdb():
     def submitdb():
         global con,mycursor
-        host=hostval.get()
-        user=userval.get()
-        password=passval.get()
+        # host=hostval.get()
+        # user=userval.get()
+        # password=passval.get()
+        host = 'localhost'
+        user = 'root'
+        password = 'shobhit'
         try:
             con=pymysql.connect(host=host,user=user,password=password)
             mycursor=con.cursor()
@@ -99,7 +102,40 @@ def connectdb():
 
 def addrecord():
     def submitadd():
-        print("Added")
+        try:
+            id=idval.get()
+            name=nameval.get()
+            disc1=disc1val.get()
+            disc2=disc2val.get()
+            disc3=disc3val.get()
+            try:
+                str='insert into records values(%s,%s,%s,%s,%s)'
+                mycursor.execute(str,(id,name,disc1,disc2,disc3))
+                con.commit()
+            # print("Yes")
+                value=messagebox.askyesno('Notification','Record has been entered .. Do you want to enter again ',parent=addroot)
+                if(value==True):
+                    idval.set('')
+                    nameval.set('')
+                    disc1val.set('')
+                    disc2val.set('')
+                    disc3val.set('')
+            except:
+                messagebox.showerror('Notifications','ID alreay exist..Try another ID ',parent=addroot)
+
+            str ='select * from records'
+            mycursor.execute(str)
+            datas=mycursor.fetchall()
+            datatable.delete(*datatable.get_children())
+            for i in datas:
+                vv=[i[0],i[1],i[2],i[3],i[4]]
+                datatable.insert('',END,values=vv)
+        except:
+            messagebox.showinfo('Notification','Connect to database')
+
+        # print(datas)
+
+
     addroot=Toplevel(master=dataentryframe)
     addroot.grab_set()
     addroot.geometry('470x370+220+200')
@@ -152,12 +188,66 @@ def addrecord():
 
 
 def searchrecord():
-    def submitadd():
-        print("Searched")
+    def submitsearch():
+        try:
+            id = idval.get()
+            name = nameval.get()
+        # disc1 = disc1val.get()
+        # disc2 = disc2val.get()
+        # disc3 = disc3val.get()
+            if(id!=''):
+                str='select * from records where serial=%s'
+                mycursor.execute(str,(id))
+                datas=mycursor.fetchall()
+                datatable.delete(*datatable.get_children())
+                for i in datas:
+                    vv = [i[0], i[1], i[2], i[3], i[4]]
+                    datatable.insert('', END, values=vv)
+
+            if (name != ''):
+                str = 'select * from records where description=%s'
+                mycursor.execute(str, (name))
+                datas = mycursor.fetchall()
+                datatable.delete(*datatable.get_children())
+                for i in datas:
+                    vv = [i[0], i[1], i[2], i[3], i[4]]
+                    datatable.insert('', END, values=vv)
+        except:
+            messagebox.showinfo('Notification','Please connect to database or enter correct details')
+
+        # if (disc1 != ''):
+        #     str = 'select * from records where detail1=%s'
+        #     mycursor.execute(str, (disc1))
+        #     datas = mycursor.fetchall()
+        #     datatable.delete(*datatable.get_children())
+        #     for i in datas:
+        #         vv = [i[0], i[1], i[2], i[3], i[4]]
+        #         datatable.insert('', END, values=vv)
+        #
+        # if (disc2 != ''):
+        #     str = 'select * from records where detail2=%s'
+        #     mycursor.execute(str, (disc2))
+        #     datas = mycursor.fetchall()
+        #     datatable.delete(*datatable.get_children())
+        #     for i in datas:
+        #         vv = [i[0], i[1], i[2], i[3], i[4]]
+        #         datatable.insert('', END, values=vv)
+        #
+        # if (disc3 != ''):
+        #     str = 'select * from records where detail3=%s'
+        #     mycursor.execute(str, (disc3))
+        #     datas = mycursor.fetchall()
+        #     datatable.delete(*datatable.get_children())
+        #     for i in datas:
+        #         vv = [i[0], i[1], i[2], i[3], i[4]]
+        #         datatable.insert('', END, values=vv)
+
+
+        # print("Searched")
     searchroot = Toplevel(master=dataentryframe)
     searchroot.grab_set()
     searchroot.geometry('470x370+220+200')
-    searchroot.title('Add Record')
+    searchroot.title('Search Record...On the basis of any of the two fields')
     searchroot.config(bg='blue')
     searchroot.resizable(False, False)
     ##############################################add labels
@@ -169,106 +259,215 @@ def searchrecord():
                       borderwidth=3, width=12, anchor='w')
     namelabel.place(x=10, y=70)
 
-    desc1label = Label(searchroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                       borderwidth=3, width=12, anchor='w')
-    desc1label.place(x=10, y=130)
-
-    disc2label = Label(searchroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                       borderwidth=3, width=12, anchor='w')
-    disc2label.place(x=10, y=190)
-
-    disc3label = Label(searchroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                       borderwidth=3, width=12, anchor='w')
-    disc3label.place(x=10, y=250)
+    # desc1label = Label(searchroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                    borderwidth=3, width=12, anchor='w')
+    # desc1label.place(x=10, y=130)
+    #
+    # disc2label = Label(searchroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                    borderwidth=3, width=12, anchor='w')
+    # disc2label.place(x=10, y=190)
+    #
+    # disc3label = Label(searchroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                    borderwidth=3, width=12, anchor='w')
+    # disc3label.place(x=10, y=250)
     ###############################33add entry
     idval = StringVar()
     nameval = StringVar()
-    disc1val = StringVar()
-    disc2val = StringVar()
-    disc3val = StringVar()
+    # disc1val = StringVar()
+    # disc2val = StringVar()
+    # disc3val = StringVar()
     identry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=idval)
     identry.place(x=250, y=10)
 
     nameentry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
     nameentry.place(x=250, y=70)
 
-    disc1entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
-    disc1entry.place(x=250, y=130)
-
-    disc2entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
-    disc2entry.place(x=250, y=190)
-
-    disc3entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
-    disc3entry.place(x=250, y=250)
+    # disc1entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
+    # disc1entry.place(x=250, y=130)
+    #
+    # disc2entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
+    # disc2entry.place(x=250, y=190)
+    #
+    # disc3entry = Entry(searchroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
+    # disc3entry.place(x=250, y=250)
 
     submitbtn = Button(searchroot, text="Submit", font=('roman', 15, 'bold'), width=20, bd=5, activebackground='blue',
-                       activeforeground='white', bg='red', command=submitadd)
+                       activeforeground='white', bg='red', command=submitsearch)
     submitbtn.place(x=150, y=310)
 
     searchroot.mainloop()
 
 def deleterecord():
-    print('delete record')
+    try:
+        cc = datatable.focus()
+        content = datatable.item(cc)
+        # print(content)
+        pp = content['values'][0]
+        str = 'delete from records where serial=%s'
+        mycursor.execute(str,(pp))
+        con.commit()
+        messagebox.showinfo('Notifications','Record with Serial No. {} deleted successfully..'.format(pp))
+        str = 'select * from records'
+        mycursor.execute(str)
+        datas = mycursor.fetchall()
+        datatable.delete(*datatable.get_children())
+        for i in datas:
+            vv = [i[0], i[1], i[2], i[3], i[4]]
+            datatable.insert('', END, values=vv)
+    except:
+        messagebox.showinfo('Notification','Please connect to a databse and select a record')
+
+    # print('delete record')
+
 
 def updaterecord():
-    def submitadd():
-        print("Updated")
 
-    updateroot = Toplevel(master=dataentryframe)
-    updateroot.grab_set()
-    updateroot.geometry('470x370+220+200')
-    updateroot.title('Add Record')
-    updateroot.config(bg='blue')
-    updateroot.resizable(False, False)
-    ##############################################add labels
-    idlabel = Label(updateroot, text="Enter Serial No : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                    borderwidth=3, width=12, anchor='w')
-    idlabel.place(x=10, y=10)
+    def submitupdate():
+        id = idval.get()
+        name = nameval.get()
+        disc1 = disc1val.get()
+        disc2 = disc2val.get()
+        disc3 = disc3val.get()
+        str='update records set description=%s,detail1=%s,detail2=%s,detail3=%s where serial=%s'
+        mycursor.execute(str,(name,disc1,disc2,disc3,id))
+        con.commit()
+        messagebox.showinfo('Notification','Record with serial No {} updated successfully'.format(id),parent=updateroot)
+        str = 'select * from records'
+        mycursor.execute(str)
+        datas = mycursor.fetchall()
+        datatable.delete(*datatable.get_children())
+        for i in datas:
+            vv = [i[0], i[1], i[2], i[3], i[4]]
+            datatable.insert('', END, values=vv)
 
-    namelabel = Label(updateroot, text="Description: ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                      borderwidth=3, width=12, anchor='w')
-    namelabel.place(x=10, y=70)
 
-    desc1label = Label(updateroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                       borderwidth=3, width=12, anchor='w')
-    desc1label.place(x=10, y=130)
+    # updateroot = Toplevel(master=dataentryframe)
+    # updateroot.grab_set()
+    # updateroot.geometry('470x370+220+200')
+    # updateroot.title('Add Record')
+    # updateroot.config(bg='blue')
+    # updateroot.resizable(False, False)
+    # ##############################################add labels
+    # idlabel = Label(updateroot, text="Enter Serial No : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                 borderwidth=3, width=12, anchor='w')
+    # idlabel.place(x=10, y=10)
+    #
+    # namelabel = Label(updateroot, text="Description: ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                   borderwidth=3, width=12, anchor='w')
+    # namelabel.place(x=10, y=70)
+    #
+    # desc1label = Label(updateroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                    borderwidth=3, width=12, anchor='w')
+    # desc1label.place(x=10, y=130)
+    #
+    # disc2label = Label(updateroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                    borderwidth=3, width=12, anchor='w')
+    # disc2label.place(x=10, y=190)
+    #
+    # disc3label = Label(updateroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+    #                    borderwidth=3, width=12, anchor='w')
+    # disc3label.place(x=10, y=250)
+    # ###############################33add entry
+    # idval = StringVar()
+    # nameval = StringVar()
+    # disc1val = StringVar()
+    # disc2val = StringVar()
+    # disc3val = StringVar()
+    # identry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=idval)
+    # identry.place(x=250, y=10)
+    #
+    # nameentry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
+    # nameentry.place(x=250, y=70)
+    #
+    # disc1entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
+    # disc1entry.place(x=250, y=130)
+    #
+    # disc2entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
+    # disc2entry.place(x=250, y=190)
+    #
+    # disc3entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
+    # disc3entry.place(x=250, y=250)
+    #
+    # submitbtn = Button(updateroot, text="Submit", font=('roman', 15, 'bold'), width=20, bd=5, activebackground='blue',
+    #                    activeforeground='white', bg='red', command=submitupdate)
+    # submitbtn.place(x=150, y=310)
+    cc=datatable.focus()
+    content=datatable.item(cc)
+    pp=content['values']
+    if(len(pp)!=0):
+        updateroot = Toplevel(master=dataentryframe)
+        updateroot.grab_set()
+        updateroot.geometry('470x370+220+200')
+        updateroot.title('Add Record')
+        updateroot.config(bg='blue')
+        updateroot.resizable(False, False)
+        ##############################################add labels
+        idlabel = Label(updateroot, text="Enter Serial No : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                        borderwidth=3, width=12, anchor='w')
+        idlabel.place(x=10, y=10)
 
-    disc2label = Label(updateroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                       borderwidth=3, width=12, anchor='w')
-    disc2label.place(x=10, y=190)
+        namelabel = Label(updateroot, text="Description: ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                          borderwidth=3, width=12, anchor='w')
+        namelabel.place(x=10, y=70)
 
-    disc3label = Label(updateroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
-                       borderwidth=3, width=12, anchor='w')
-    disc3label.place(x=10, y=250)
-    ###############################33add entry
-    idval = StringVar()
-    nameval = StringVar()
-    disc1val = StringVar()
-    disc2val = StringVar()
-    disc3val = StringVar()
-    identry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=idval)
-    identry.place(x=250, y=10)
+        desc1label = Label(updateroot, text="Enter Detail1 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                           borderwidth=3, width=12, anchor='w')
+        desc1label.place(x=10, y=130)
 
-    nameentry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
-    nameentry.place(x=250, y=70)
+        disc2label = Label(updateroot, text="Enter Detail2 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                           borderwidth=3, width=12, anchor='w')
+        disc2label.place(x=10, y=190)
 
-    disc1entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
-    disc1entry.place(x=250, y=130)
+        disc3label = Label(updateroot, text="Enter Detail3 : ", bg='gold2', font=('times', 20, 'bold'), relief=GROOVE,
+                           borderwidth=3, width=12, anchor='w')
+        disc3label.place(x=10, y=250)
+        ###############################33add entry
+        idval = StringVar()
+        nameval = StringVar()
+        disc1val = StringVar()
+        disc2val = StringVar()
+        disc3val = StringVar()
+        identry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=idval)
+        identry.place(x=250, y=10)
 
-    disc2entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
-    disc2entry.place(x=250, y=190)
+        nameentry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=nameval)
+        nameentry.place(x=250, y=70)
 
-    disc3entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
-    disc3entry.place(x=250, y=250)
+        disc1entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc1val)
+        disc1entry.place(x=250, y=130)
 
-    submitbtn = Button(updateroot, text="Submit", font=('roman', 15, 'bold'), width=20, bd=5, activebackground='blue',
-                       activeforeground='white', bg='red', command=submitadd)
-    submitbtn.place(x=150, y=310)
+        disc2entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc2val)
+        disc2entry.place(x=250, y=190)
 
-    updateroot.mainloop()
+        disc3entry = Entry(updateroot, font=('roman', 15, 'bold'), bd=5, textvariable=disc3val)
+        disc3entry.place(x=250, y=250)
+
+        submitbtn = Button(updateroot, text="Submit", font=('roman', 15, 'bold'), width=20, bd=5,
+                           activebackground='blue',
+                           activeforeground='white', bg='red', command=submitupdate)
+        submitbtn.place(x=150, y=310)
+        idval.set(pp[0])
+        nameval.set(pp[1])
+        disc1val.set(pp[2])
+        disc2val.set(pp[3])
+        disc3val.set(pp[4])
+        updateroot.mainloop()
+    else:
+        messagebox.showinfo('Notification','Please connect to a databse and select a record')
+
+    # updateroot.mainloop()
 
 def showrecord():
-    print('show record')
+    try:
+        str = 'select * from records'
+        mycursor.execute(str)
+        datas = mycursor.fetchall()
+        datatable.delete(*datatable.get_children())
+        for i in datas:
+           vv = [i[0], i[1], i[2], i[3], i[4]]
+           datatable.insert('', END, values=vv)
+    except:
+        messagebox.showinfo('Notification','Please connect to database first')
 
 def exportrecord():
     print('export record')
