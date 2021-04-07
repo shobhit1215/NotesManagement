@@ -1,7 +1,8 @@
 from tkinter import *
-from tkinter import Toplevel,messagebox
+from tkinter import Toplevel,messagebox,filedialog
 from tkinter.ttk import Treeview
 from tkinter import ttk
+import pandas
 import pymysql
 
 import time
@@ -29,12 +30,12 @@ def intro():
 def connectdb():
     def submitdb():
         global con,mycursor
-        # host=hostval.get()
-        # user=userval.get()
-        # password=passval.get()
-        host = 'localhost'
-        user = 'root'
-        password = 'shobhit'
+        host=hostval.get()
+        user=userval.get()
+        password=passval.get()
+        # host = 'localhost'
+        # user = 'root'
+        # password = 'shobhit'
         try:
             con=pymysql.connect(host=host,user=user,password=password)
             mycursor=con.cursor()
@@ -470,7 +471,23 @@ def showrecord():
         messagebox.showinfo('Notification','Please connect to database first')
 
 def exportrecord():
-    print('export record')
+    try:
+        ff=filedialog.asksaveasfilename()
+        gg=datatable.get_children()
+        id,name,disc1,disc2,disc3=[],[],[],[],[]
+        for i in gg:
+            content=datatable.item(i)
+            pp=content['values']
+            id.append(pp[0]),name.append(pp[1]),disc1.append(pp[2]),disc2.append(pp[3]),disc3.append(pp[4])
+        dd=['Serial','Description','Detail1','Detail2','Detail3']
+        df=pandas.DataFrame(list(zip(id,name,disc1,disc2,disc3)),columns=dd)
+        paths=r'{}.csv'.format(ff)
+        df.to_csv(paths,index=False)
+        messagebox.showinfo('Notification','Student data is saved {}'.format(paths))
+    except:
+        messagebox.showinfo('Notification','Connect to database and have some records in Datatable')
+
+
 
 def exitrecord():
     res=messagebox.askyesnocancel('Notification','Do you want to exit? ')
