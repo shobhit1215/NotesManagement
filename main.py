@@ -501,6 +501,7 @@ root.geometry('1000x700+200+50')
 root.title('Manage your Notes here')
 root.config(bg='yellow')
 root.resizable(False,False)
+root.wm_iconbitmap('notes_management.ico')
 
 ######################################Frames
 #Data Entry Frames Label
